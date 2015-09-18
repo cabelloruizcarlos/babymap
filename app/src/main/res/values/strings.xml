@@ -1,3 +1,20 @@
 <resources>
   <string name="app_name">BabyMap</string>
+
+  <!--APP-->
+  <string name="hello_world">Hello world!</string>
+  <string name="action_settings">Settings</string>
+
+  <!--ACTIVITIES-->
+  <string name="main_activity_title">Main</string>
+  <string name="maps_activity_title">Map</string>
+  <string name="login_activity_title">Login</string>
+
+  <!--ACTIVITY LOGIN-->
+  <string name="login_username">username</string>
+  <string name="login_pass">password</string>
+  <string name="login_button">Submit</string>
+  <string name="drawer_open">Open</string>
+  <string name="drawer_close">Close</string>
+
 </resources>
