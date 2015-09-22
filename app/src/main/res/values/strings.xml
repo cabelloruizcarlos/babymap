@@ -17,4 +17,7 @@
   <string name="drawer_open">Open</string>
   <string name="drawer_close">Close</string>
 
+  <!--MAPS-->
+  <string name="no_location">Enable the location in the device to move to your current location</string>
+
 </resources>

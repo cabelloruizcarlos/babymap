@@ -1,9 +1,14 @@
 package com.crrc.babymap.app.activities;
 
+import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.crrc.babymap.R;
 import com.crrc.babymap.app.interfaces.ILogin;
@@ -49,8 +54,22 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 		/*Create and set up the map*/
 		setUpMapIfNeeded();
 
-	  /*Show the location button*/
-		this.mMap.setMyLocationEnabled(true);
+		/*Set the Maps to show the user position and do zoom in its current position*/
+		if (!setMapsLocation())
+			Toast.makeText(getApplicationContext(), getString(R.string.no_location), Toast.LENGTH_SHORT).show();
+
+		this.mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+			@Override
+			public boolean onMyLocationButtonClick() {
+				if (!setMapsLocation())
+					Toast.makeText(getApplicationContext(), getString(R.string.no_location), Toast.LENGTH_SHORT).show();
+
+				return true;
+			}
+		});
+
+		/*Show the zooming controls on the map*/
+		this.mMap.getUiSettings().setZoomControlsEnabled(true);
 
 	  /*Customization of the marker`s dialog*/
 		this.mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -69,9 +88,30 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 
 			}
 		});
-	      /*Retrieve the data from the server, save it in the this.mMarkerOptionsList array and adding it into the maps*/
+		    /*Retrieve the data from the server, save it in the this.mMarkerOptionsList array and adding it into the maps*/
 		retrieveFromTheServer();
 
+	}
+
+	private boolean setMapsLocation() {
+
+		/*Show the location button*/
+		this.mMap.setMyLocationEnabled(true);
+
+		/*I get the location and I move the maps to this position adding a zoom*/
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Criteria criteria = new Criteria();
+		Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+		if (location != null) {
+			UserProfile.getMainUserProfile().setLastLatitude((float) location.getLatitude());
+			UserProfile.getMainUserProfile().setLastLongitude((float) location.getLongitude());
+			Log.v(TAG, "location.latitude: " + location.getLatitude() + ";location.longitude: " + location.getLongitude());
+		} else if ((UserProfile.getMainUserProfile().getLastLatitude() == 0) || (UserProfile.getMainUserProfile().getLastLongitude() == 0)) {
+			return false;
+		}
+		Log.v(TAG, "User.latitude: " + UserProfile.getMainUserProfile().getLastLatitude() + ";User.longitude:" + UserProfile.getMainUserProfile().getLastLongitude());
+		this.setMapsZoom(UserProfile.getMainUserProfile().getLastLatitude(), UserProfile.getMainUserProfile().getLastLongitude());
+		return true;
 	}
 
 	/**
@@ -134,7 +174,7 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 			public void success(JSONObject[] jsonObject, Response response) {
 				Log.v(TAG, "Everything good.Num of markers: " + jsonObject.length);
 				saveMarkersResponse(jsonObject);
-                /*Add the MarkersOptions to the map*/
+				        /*Add the MarkersOptions to the map*/
 				addMarkerOptions();
 			}
 
@@ -193,5 +233,12 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 	protected void onResume() {
 		super.onResume();
 		setUpMapIfNeeded();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		setMapsLocation();
 	}
 }

@@ -33,7 +33,7 @@ public class SplashScreen extends Activity {
 	private void initApp(SharedPreferences pPreferences) {
 		UserProfile.initMainUserProfile(pPreferences);
 
-//      TODO: While we didnt decided how to set the security of the app. The user_id is going to be always 0
+		//TODO: While we didnt decided how to set the security of the app. The user_id is going to be always 0
 		UserProfile.getMainUserProfile().setUser_id(0);
 	}
 }
