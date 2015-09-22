@@ -1,11 +1,8 @@
-package com.crrc.babymap.model;
+package com.crrc.babymap.app.model;
 
 import android.content.SharedPreferences;
 
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.List;
 
 /**
  * Created by Carlos on 07/04/2015.
@@ -26,10 +23,6 @@ public class UserProfile {
     private String userToken;
 
     public UserProfile() {
-    }
-
-    public static void initMainUserProfile() {
-        mainUserProfile = new UserProfile();
     }
 
     public static void initMainUserProfile(SharedPreferences p_preferences) {

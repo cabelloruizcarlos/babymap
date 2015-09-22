@@ -1,4 +1,4 @@
-package com.crrc.babymap.model;
+package com.crrc.babymap.app.model;
 
 /**
  * Created by Carlos on 07/04/2015.

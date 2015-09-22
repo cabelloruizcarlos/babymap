@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 import com.crrc.babymap.R;
 
-import com.crrc.babymap.interfaces.ILogin;
-import com.crrc.babymap.retrofit.Validation;
-import com.crrc.babymap.model.Constant;
-import com.crrc.babymap.model.UserProfile;
+import com.crrc.babymap.app.interfaces.ILogin;
+import com.crrc.babymap.app.retrofit.Validation;
+import com.crrc.babymap.app.model.Constant;
+import com.crrc.babymap.app.model.UserProfile;
 
 import retrofit.RetrofitError;
 
@@ -72,7 +72,6 @@ public class LoginActivity extends Activity {
                     validation = validateCredentials(username, password);
                     valid = validation.isValid;
                 } catch (RetrofitError ro) {
-                    // TODO(from Yubl): feed back to user
                     valid = false;
                 }
 
@@ -82,14 +81,13 @@ public class LoginActivity extends Activity {
 
                     UserProfile.getMainUserProfile().setLogged(true);
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();
 
                     overridePendingTransition(R.anim.enter_from_left, R.anim.exit_from_left);
 
                 } else {
-                    // TODO(benp) review how to display the fail message
                     String message = "Login failed";
                     if (validation != null) {
                         message += ": " + validation.errorMessage;

@@ -1,4 +1,4 @@
-package com.crrc.babymap.retrofit;
+package com.crrc.babymap.app.retrofit;
 
 /**
  * Created by Carlos on 07/04/15.

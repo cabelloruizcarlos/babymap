@@ -37,7 +37,6 @@
 
         <activity android:name=".app.activities.LoginActivity" android:label="@string/login_activity_title" />
         <activity android:name=".app.activities.MapsActivity" android:label="@string/maps_activity_title" />
-        <activity android:name=".app.activities.MainActivity" android:label="@string/main_activity_title" />
 
     </application>
 

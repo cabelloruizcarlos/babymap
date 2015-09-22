@@ -1,6 +1,6 @@
-package com.crrc.babymap.model;
+package com.crrc.babymap.app.model;
 
-import com.crrc.babymap.interfaces.IMarker;
+import com.crrc.babymap.app.interfaces.IMarker;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -36,7 +36,7 @@ public class UserMarkers {
 
         if ((pMarker != null) && (this.mMarkersList.size() > 0)) {
             for (int i = 0; i < this.mMarkersList.size(); i++) {
-                // TODO: OJO I am comparing a Marker.getPosition() and MarkerOptions.getPosition() without checking it before
+                // TODO: I am comparing a Marker.getPosition() and MarkerOptions.getPosition() without checking it before
                 if (this.mMarkersList.get(i).getPosition().equals(pMarker.getPosition()))
                     return i;
             }

@@ -1,6 +1,6 @@
-package com.crrc.babymap.interfaces;
+package com.crrc.babymap.app.interfaces;
 
-import com.crrc.babymap.retrofit.Validation;
+import com.crrc.babymap.app.retrofit.Validation;
 
 import org.json.JSONObject;
 
