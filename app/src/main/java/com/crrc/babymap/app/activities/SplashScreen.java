@@ -9,6 +9,7 @@ import android.os.Handler;
 import com.crrc.babymap.R;
 import com.crrc.babymap.app.model.Constant;
 import com.crrc.babymap.app.model.UserProfile;
+import com.crrc.babymap.app.model.Util;
 
 public class SplashScreen extends Activity {
 
@@ -35,5 +36,6 @@ public class SplashScreen extends Activity {
 
 		//TODO: While we didnt decided how to set the security of the app. The user_id is going to be always 0
 		UserProfile.getMainUserProfile().setUser_id(0);
+		Util.setScreenSizes(this);
 	}
 }

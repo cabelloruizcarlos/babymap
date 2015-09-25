@@ -12,6 +12,9 @@ public class UserProfile {
 	private static SharedPreferences preferences;
 	private static UserProfile mainUserProfile;
 
+	private int screenHeight;
+	private int screenWidth;
+
 	private int user_id;
 	private String user;
 	private String pass;
@@ -123,6 +126,22 @@ public class UserProfile {
 		getMainUserProfile().lastLongitude = lastLongitude;
 		editor.putFloat("longitude", lastLongitude);
 		editor.commit();
+	}
+
+	public float getScreenHeight() {
+		return this.mainUserProfile.screenHeight;
+	}
+
+	public void setScreenHeight(int pScreenHeight) {
+		getMainUserProfile().screenHeight = pScreenHeight;
+	}
+
+	public float getScreenWidth() {
+		return this.mainUserProfile.screenWidth;
+	}
+
+	public void setScreenWidth(int pScreenWidth) {
+		getMainUserProfile().screenWidth = pScreenWidth;
 	}
 
 	public static void setUserProfileData(SharedPreferences p_preferences) {
