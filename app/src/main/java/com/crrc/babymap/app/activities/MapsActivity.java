@@ -1,26 +1,17 @@
 package com.crrc.babymap.app.activities;
 
-import android.content.Context;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.crrc.babymap.R;
-import com.crrc.babymap.app.interfaces.ILogin;
 import com.crrc.babymap.app.interfaces.IMarker;
 import com.crrc.babymap.app.model.Constant;
 import com.crrc.babymap.app.model.UserMarkers;
 import com.crrc.babymap.app.model.UserProfile;
-import com.crrc.babymap.app.model.Util;
-import com.crrc.babymap.app.views.HScrollView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -29,8 +20,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,19 +30,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.converter.GsonConverter;
-
-public class MapsActivity extends FragmentActivity implements IMarker {
+public class MapsActivity extends FragmentActivity implements IMarker, View.OnClickListener {
 	private String TAG = MapsActivity.class.getSimpleName();
 
 	private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 	private List<MarkerOptions> mMarkerOptionsList;
-	private HScrollView mMenuLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +60,14 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 				return true;
 			}
 		});
-	  /*Customization of the marker`s dialog*/
+		this.mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+			@Override
+			public void onMapClick(LatLng latLng) {
+				Log.d(TAG, "You click on " + latLng.latitude + "lat, " + latLng.longitude + "long");
+			}
+		});
+
+		/*Customization of the marker`s dialog*/
 		this.mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 			@Override
 			public View getInfoWindow(Marker marker) {
@@ -90,7 +81,6 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 
 				// Returning the view containing InfoWindow contents
 				return v;
-
 			}
 		});
 
@@ -101,34 +91,47 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 
 	private void loadMenu() {
 
-		this.mMenuLayout = (HScrollView) findViewById(R.id.map_menu_layout);
-		float buttonHeight = Util.dpToPx(getApplicationContext(), (int) getResources().getDimension(R.dimen.button_height));
+		ImageView icon = new ImageView(this);
+		ImageView subIcon = new ImageView(this);
+		ImageView subIcon2 = new ImageView(this);
 
-//		ArrayList<String> tabsName = new ArrayList<String>(2);
-//		tabsName.add(0, "Info");
-//		tabsName.add(1, "Add marker");
-//		this.mMenuLayout.setTabs(tabsName);
+		icon.setImageResource(R.mipmap.ic_launcher);
+		subIcon.setImageDrawable(getResources().getDrawable(R.drawable.subaction_button_1));
+		subIcon2.setImageDrawable(getResources().getDrawable(R.drawable.subaction_button_2));
 
-		this.mMenuLayout.setY(UserProfile.getMainUserProfile().getScreenHeight());
+		FloatingActionButton menuBtn = new FloatingActionButton.Builder(this)
+				.setBackgroundDrawable(R.drawable.selector_menu_button)
+				.build();
 
-		final TranslateAnimation inAnimation = new TranslateAnimation(0, 0, 0, -buttonHeight);
-		inAnimation.setDuration(600);
-		inAnimation.setFillAfter(true);
+		SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+		SubActionButton infoBtn = itemBuilder.setContentView(subIcon).build();
+		SubActionButton addMarkerBtn = itemBuilder.setContentView(subIcon2).build();
 
-		new Handler().postDelayed(
-				new Runnable() {
-					public void run() {
-						mMenuLayout.startAnimation(inAnimation);
-					}
-				}, 1000);
+		infoBtn.setTag(Constant.INFO_MENU_BTN_TAG);
+		addMarkerBtn.setTag(Constant.ADD_MENU_BTN_TAG);
+
+		infoBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.selector_menu_info_button));
+		addMarkerBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.selector_menu_info_button));
+
+		FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+				.addSubActionView(infoBtn)
+				.addSubActionView(addMarkerBtn)
+				.attachTo(menuBtn)
+				.build();
 	}
 
 	private boolean setMapsLocation() {
+/*
+	It is commented because in order to add the floating button I needed to update the project to use Marsmallow
+	so it comes with all the new features. This chunk of the code needs to handle the permission about knowing the location
+		*/
+/*Show the location button*//*
 
-		/*Show the location button*/
 		this.mMap.setMyLocationEnabled(true);
 
-		/*I get the location and I move the maps to this position adding a zoom*/
+		*/
+/*I get the location and I move the maps to this position adding a zoom*//*
+
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
 		Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
@@ -141,6 +144,7 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 		}
 		Log.v(TAG, "User.latitude: " + UserProfile.getMainUserProfile().getLastLatitude() + ";User.longitude:" + UserProfile.getMainUserProfile().getLastLongitude());
 		this.setMapsZoom(UserProfile.getMainUserProfile().getLastLatitude(), UserProfile.getMainUserProfile().getLastLongitude());
+*/
 		return true;
 	}
 
@@ -156,7 +160,7 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 
 	private void retrieveFromTheServer() {
 
-		Gson gson = new GsonBuilder()
+/*		Gson gson = new GsonBuilder()
 				.setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
 				.create();
 
@@ -180,7 +184,7 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 			public void success(JSONObject[] jsonObject, Response response) {
 				Log.v(TAG, "Everything good.Num of markers: " + jsonObject.length);
 				saveMarkersResponse(jsonObject);
-				        /*Add the MarkersOptions to the map*/
+				        *//*Add the MarkersOptions to the map*//*
 				addMarkerOptions();
 			}
 
@@ -188,7 +192,7 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 			public void failure(RetrofitError error) {
 				Log.v(TAG, "Tol failure: getResponse:" + error.getResponse() + "; error.getMessage:" + error.getMessage());
 			}
-		});
+		});*/
 	}
 
 	private void saveMarkersResponse(JSONObject[] jsonObject) {
@@ -270,5 +274,21 @@ public class MapsActivity extends FragmentActivity implements IMarker {
 		super.onDestroy();
 
 		setMapsLocation();
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		String tag = (String) v.getTag();
+		switch (tag) {
+			case Constant.INFO_MENU_BTN_TAG: {
+				Log.d(TAG,"Open the info of the user menu layout");
+				break;
+			}
+			case Constant.ADD_MENU_BTN_TAG: {
+				Log.d(TAG,"Open the add marker menu layout");
+				break;
+			}
+		}
 	}
 }

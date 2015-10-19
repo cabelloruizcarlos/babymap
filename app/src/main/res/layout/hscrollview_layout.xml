@@ -1,49 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/hscrollview_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <RelativeLayout
-      android:id="@+id/hscrollview_info_layout"
-      android:layout_width="wrap_content"
+  <LinearLayout
+      android:id="@+id/hscrollview_layout"
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_alignParentLeft="true">
+      android:orientation="horizontal"
+      android:weightSum="10">
 
-    <ImageButton
+    <Button
         android:id="@+id/hscrollview_info_button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <TextView
-        android:id="@+id/hscrollview_info_caption"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top|center_horizontal"
-        android:text="User info"
+        android:layout_weight="5"
+        android:text="@string/menu_user_btn"
         android:textColor="@android:color/black"
         android:textStyle="bold"/>
-  </RelativeLayout>
 
-  <RelativeLayout
-      android:id="@+id/hscrollview_add_layout"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:layout_toRightOf="@+id/hscrollview_info_layout">
-
-    <ImageButton
+    <Button
         android:id="@+id/hscrollview_add_button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <TextView
-        android:id="@+id/hscrollview_add_caption"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top|center_horizontal"
-        android:text="Add"
+        android:layout_weight="5"
+        android:text="@string/menu_add_btn"
         android:textColor="@android:color/black"
         android:textStyle="bold"/>
-  </RelativeLayout>
+
+  </LinearLayout>
 </RelativeLayout>

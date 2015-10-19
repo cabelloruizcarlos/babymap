@@ -19,5 +19,7 @@
 
   <!--MAPS-->
   <string name="no_location">Enable the location in the device to move to your current location</string>
+  <string name="menu_add_btn">Add</string>
+  <string name="menu_user_btn">User info</string>
 
 </resources>
