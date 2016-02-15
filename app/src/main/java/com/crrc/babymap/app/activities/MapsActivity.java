@@ -1,5 +1,13 @@
 package com.crrc.babymap.app.activities;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +43,7 @@ public class MapsActivity extends FragmentActivity implements IMarker, View.OnCl
 
 	private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 	private List<MarkerOptions> mMarkerOptionsList;
+	private Location mLocation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,26 @@ public class MapsActivity extends FragmentActivity implements IMarker, View.OnCl
 		setUpMapIfNeeded();
 
 		/*Set the Maps to show the user position and do zoom in its current position*/
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+
+			/*I need to implement the new MArshmallow permissions*/
+			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				// TODO: Consider calling
+				//    ActivityCompat#requestPermissions
+				// here to request the missing permissions, and then overriding
+				//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+				//                                          int[] grantResults)
+				// to handle the case where the user grants the permission. See the documentation
+				// for ActivityCompat#requestPermissions for more details.
+				/*return TODO;*/
+			}
+		} else {
+			/*We get the location and then set the zoom*/
+			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			Criteria criteria = new Criteria();
+			this.mLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+			setMapsLocation();
+		}
 		if (!setMapsLocation())
 			Toast.makeText(getApplicationContext(), getString(R.string.no_location), Toast.LENGTH_LONG).show();
 
@@ -121,30 +150,20 @@ public class MapsActivity extends FragmentActivity implements IMarker, View.OnCl
 	}
 
 	private boolean setMapsLocation() {
-/*
-	It is commented because in order to add the floating button I needed to update the project to use Marsmallow
-	so it comes with all the new features. This chunk of the code needs to handle the permission about knowing the location
-		*/
-/*Show the location button*//*
 
+		/*Show the location button*/
 		this.mMap.setMyLocationEnabled(true);
 
-		*/
-/*I get the location and I move the maps to this position adding a zoom*//*
-
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		Criteria criteria = new Criteria();
-		Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-		if (location != null) {
-			UserProfile.getMainUserProfile().setLastLatitude((float) location.getLatitude());
-			UserProfile.getMainUserProfile().setLastLongitude((float) location.getLongitude());
-			Log.v(TAG, "location.latitude: " + location.getLatitude() + ";location.longitude: " + location.getLongitude());
+		/*I move the map to this position adding a zoom*/
+		if (this.mLocation != null) {
+			UserProfile.getMainUserProfile().setLastLatitude((float) this.mLocation.getLatitude());
+			UserProfile.getMainUserProfile().setLastLongitude((float) this.mLocation.getLongitude());
+			Log.v(TAG, "location.latitude: " + this.mLocation.getLatitude() + ";location.longitude: " + this.mLocation.getLongitude());
 		} else if ((UserProfile.getMainUserProfile().getLastLatitude() == 0) || (UserProfile.getMainUserProfile().getLastLongitude() == 0)) {
 			return false;
 		}
 		Log.v(TAG, "User.latitude: " + UserProfile.getMainUserProfile().getLastLatitude() + ";User.longitude:" + UserProfile.getMainUserProfile().getLastLongitude());
 		this.setMapsZoom(UserProfile.getMainUserProfile().getLastLatitude(), UserProfile.getMainUserProfile().getLastLongitude());
-*/
 		return true;
 	}
 
@@ -282,11 +301,11 @@ public class MapsActivity extends FragmentActivity implements IMarker, View.OnCl
 		String tag = (String) v.getTag();
 		switch (tag) {
 			case Constant.INFO_MENU_BTN_TAG: {
-				Log.d(TAG,"Open the info of the user menu layout");
+				Log.d(TAG, "Open the info of the user menu layout");
 				break;
 			}
 			case Constant.ADD_MENU_BTN_TAG: {
-				Log.d(TAG,"Open the add marker menu layout");
+				Log.d(TAG, "Open the add marker menu layout");
 				break;
 			}
 		}
