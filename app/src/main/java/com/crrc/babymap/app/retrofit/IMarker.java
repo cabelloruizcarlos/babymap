@@ -1,4 +1,4 @@
-package com.crrc.babymap.app.interfaces;
+package com.crrc.babymap.app.retrofit;
 
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;

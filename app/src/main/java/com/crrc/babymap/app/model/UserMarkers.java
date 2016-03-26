@@ -1,6 +1,6 @@
 package com.crrc.babymap.app.model;
 
-import com.crrc.babymap.app.interfaces.IMarker;
+import com.crrc.babymap.app.retrofit.IMarker;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 

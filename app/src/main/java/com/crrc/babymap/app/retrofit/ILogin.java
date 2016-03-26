@@ -1,4 +1,4 @@
-package com.crrc.babymap.app.interfaces;
+package com.crrc.babymap.app.retrofit;
 
 import com.crrc.babymap.app.retrofit.Validation;
 
