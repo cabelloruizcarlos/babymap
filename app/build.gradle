@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
   compileSdkVersion 23
@@ -17,6 +19,11 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+  //Retrolambda required language level 8
+  compileOptions {
+    targetCompatibility 1.8
+    sourceCompatibility 1.8
+  }
 }
 
 dependencies {
@@ -25,7 +32,7 @@ dependencies {
   compile 'com.google.android.gms:play-services:6.5.87'
   compile 'com.squareup.retrofit:retrofit:1.9.0'
   // Used by Retrofit
-  compile 'io.reactivex:rxjava:1.0.0'
+  compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
   compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
   compile 'com.squareup.okhttp:okhttp:2.0.0'
   compile 'de.greenrobot:eventbus:2.4.0'
@@ -38,4 +45,10 @@ dependencies {
   // Optional -- Mockito framework
   testCompile 'org.mockito:mockito-core:1.10.19'
 
+  //RxLifecycle: https://github.com/trello/RxLifecycle
+  compile 'com.trello:rxlifecycle:0.6.1'
+  compile 'com.trello:rxlifecycle-components:0.6.1'
+  //Butter Knife: http://jakewharton.github.io/butterknife/
+  compile 'com.jakewharton:butterknife:8.2.0'
+  apt 'com.jakewharton:butterknife-compiler:8.2.0'
 }

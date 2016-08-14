@@ -1,13 +1,10 @@
 package com.crrc.babymap.app.presenters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
-import com.crrc.babymap.R;
-import com.crrc.babymap.app.activities.MapsActivity;
-import com.crrc.babymap.app.interfaces.ILoginView;
+import com.crrc.babymap.app.interfaces.LoginView;
 import com.crrc.babymap.app.model.UserProfile;
+import com.crrc.babymap.app.mvp.BasePresenter;
 import com.crrc.babymap.app.retrofit.ILogin;
 import com.crrc.babymap.app.retrofit.Validation;
 
@@ -16,12 +13,17 @@ import retrofit.RetrofitError;
 /**
  * Created by Carlos2 on 26/03/2016.
  */
-public class LoginPresenter {
+public class LoginPresenter extends BasePresenter<LoginView>{
 
-    ILoginView mView;
+    LoginView mView;
 
-    public LoginPresenter(ILoginView view){
-        this.mView = view;
+    public LoginPresenter(LoginView view){
+        super(view);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         this.mView.loadUser();
     }

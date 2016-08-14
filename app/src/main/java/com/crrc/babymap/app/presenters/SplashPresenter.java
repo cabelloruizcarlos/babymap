@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import com.crrc.babymap.app.interfaces.ISplashPresenter;
 import com.crrc.babymap.app.interfaces.ISplashView;
 import com.crrc.babymap.app.model.UserProfile;
-import com.crrc.babymap.app.model.Util;
+import com.crrc.babymap.app.util.Util;
 
 /**
  * Created by Carlos on 03/03/2016.

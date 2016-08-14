@@ -1,13 +1,21 @@
-package com.crrc.babymap.app.model;
+package com.crrc.babymap.app.util;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import com.crrc.babymap.app.model.UserProfile;
+
 /**
  * Created by Carlos on 22/09/2015.
  */
 public class Util {
+
+	public static void freeMemory() {
+		System.runFinalization();
+		Runtime.getRuntime().gc();
+		System.gc();
+	}
 
 	public static void setScreenSizes(Activity pActivity){
 

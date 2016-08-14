@@ -1,32 +1,34 @@
 package com.crrc.babymap.app.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.crrc.babymap.R;
 
-import com.crrc.babymap.app.interfaces.ILoginView;
+import com.crrc.babymap.app.interfaces.LoginView;
+import com.crrc.babymap.app.mvp.MvpActivity;
 import com.crrc.babymap.app.presenters.LoginPresenter;
-import com.crrc.babymap.app.retrofit.ILogin;
-import com.crrc.babymap.app.retrofit.Validation;
 import com.crrc.babymap.app.model.Constant;
 import com.crrc.babymap.app.model.UserProfile;
 
-import retrofit.RetrofitError;
-
-public class LoginActivity extends Activity implements View.OnClickListener, ILoginView {
+public class LoginActivity extends MvpActivity<LoginPresenter> implements View.OnClickListener, LoginView {
 
     private Button mSubmitBtn;
     private EditText mUserView, mPasswordView;
 
     private LoginPresenter mPresenter;
+
+
+    @Override
+    protected LoginPresenter createPresenter() {
+        return new LoginPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, ILo
         this.mPresenter = new LoginPresenter(this);
         this.mSubmitBtn.setOnClickListener(this);
     }
+
+    @Override
+    protected Fragment getFirstFragment() { return null; }
 
     @Override
     public void onClick(View v) {
